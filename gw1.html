@@ -25,13 +25,45 @@
       font-size: 48px;
     }
 
-    iframe {
-      width: 100%;
-      height: 700px;
-      border: none;
+    .table-wrapper {
+      overflow-x: auto;
+      margin-top: 30px;
       border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
       background: white;
-      margin-top: 25px;
+      color: black;
+      min-width: 900px;
+    }
+
+    th {
+      background: #4fc3f7;
+      color: black;
+      padding: 12px;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    td:first-child, th:first-child {
+      text-align: left;
+      font-weight: bold;
+      position: sticky;
+      left: 0;
+      background: white;
+    }
+
+    th:first-child {
+      background: #4fc3f7;
     }
 
     .button {
@@ -56,15 +88,43 @@
 
     <p>Predictions and results for Gameweek 1.</p>
 
-    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTpZjNU0JBFZgJA0ebw6Xo5tHQi2GlBaYSYB-MaJ9u3ZXKjDCdYIijJ2gCoDja4cVfK5p8iq2vppsS_/pubhtml?gid=1429651543&single=true"></iframe>
-
-    <br>
+    <div class="table-wrapper">
+      <table id="data-table"></table>
+    </div>
 
     <a class="button" href="leaderboard.html">
       Back to Leaderboards
     </a>
 
   </div>
+
+  <script>
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTpZjNU0JBFZgJA0ebw6Xo5tHQi2GlBaYSYB-MaJ9u3ZXKjDCdYIijJ2gCoDja4cVfK5p8iq2vppsS_/pub?gid=1429651543&single=true&output=csv";
+
+    fetch(csvUrl)
+      .then(response => response.text())
+      .then(data => {
+        const rows = data
+          .trim()
+          .split("\n")
+          .map(row => row.split(","));
+
+        const table = document.getElementById("data-table");
+
+        rows.forEach((row, index) => {
+          const tr = document.createElement("tr");
+
+          row.forEach(cell => {
+            const element = index === 0 ? "th" : "td";
+            const td = document.createElement(element);
+            td.textContent = cell;
+            tr.appendChild(td);
+          });
+
+          table.appendChild(tr);
+        });
+      });
+  </script>
 
 </body>
 </html>
