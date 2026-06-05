@@ -2,63 +2,65 @@
 <html>
 <head>
   <title>World Cup Pool</title>
+
   <style>
     body {
       font-family: Arial;
       background: #0b1020;
       color: white;
       text-align: center;
-      padding: 40px;
+      padding: 20px;
+      margin: 0;
     }
 
     h1 {
       font-size: 48px;
+      margin-top: 30px;
     }
 
-    .box {
+    p {
+      font-size: 18px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
       background: #1a2238;
       padding: 30px;
+      border-radius: 16px;
+    }
+
+    iframe {
+      width: 100%;
       border-radius: 12px;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    a {
-      color: #4fc3f7;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      background: #4fc3f7;
-      color: black;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 20px;
+      margin-top: 30px;
+      background: white;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="box">
+  <div class="container">
+
     <h1>⚽ World Cup Pool 2026</h1>
 
     <p>
-      Predict match results, earn points, and compete with friends.
+      Submit your predictions and compete with friends.
     </p>
 
-    <button onclick="window.location.href='https://google.com'">
-      Submit Predictions
-    </button>
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSdLnOHjMHH9Gg7IaZSs0tyELRSq-r0Id8hDW-sctF78f6k50A/viewform?embedded=true"
+      width="640"
+      height="709"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0">
+      Loading…
+    </iframe>
 
-    <p style="margin-top:30px;">
-      Leaderboard coming soon.
-    </p>
   </div>
 
 </body>
+</html>
 </html>
