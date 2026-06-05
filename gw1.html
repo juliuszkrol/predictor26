@@ -68,6 +68,9 @@ td {
     th:first-child {
       background: #4fc3f7;
     }
+    .actual-row td {
+  font-weight: bold;
+}
 
     .exact {
   background: #b7f7c1;
@@ -179,6 +182,9 @@ td {
 
       rows.forEach((row, rowIndex) => {
         const tr = document.createElement("tr");
+        if (rowIndex === 1) {
+  tr.classList.add("actual-row");
+}
 
         let totalPoints = 0;
 
