@@ -443,7 +443,20 @@ const awayFlag = flags[teams[1].trim()] || "";
 
           table.appendChild(tr);
 
+          
+
         });
+
+        const now = new Date();
+
+document.getElementById("last-updated").textContent =
+  "Last updated: " +
+  now.toLocaleDateString() +
+  " " +
+  now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
       });
   </script>
      
