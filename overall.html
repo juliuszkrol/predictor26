@@ -243,8 +243,7 @@
         if (index === 1) tr.classList.add("silver");
         if (index === 2) tr.classList.add("bronze");
 
-        tr.innerHTML = `
-          
+     tr.innerHTML = `
   <td>${index + 1}</td>
   <td>${player.name}</td>
   <td>${player.total}</td>
@@ -257,8 +256,7 @@
   <td>${player.gameweeks[6]}</td>
   <td>${player.gameweeks[7]}</td>
   <td>${player.gameweeks[8]}</td>
-`
-        `;
+`;
 
         table.appendChild(tr);
       });
