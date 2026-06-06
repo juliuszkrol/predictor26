@@ -147,6 +147,58 @@
   <script>
     const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTpZjNU0JBFZgJA0ebw6Xo5tHQi2GlBaYSYB-MaJ9u3ZXKjDCdYIijJ2gCoDja4cVfK5p8iq2vppsS_/pub?gid=1429651543&single=true&output=csv";
 
+const flags = {
+  MEX: "🇲🇽",
+  RSA: "🇿🇦",
+  KOR: "🇰🇷",
+  CZE: "🇨🇿",
+  CAN: "🇨🇦",
+  BIH: "🇧🇦",
+  QAT: "🇶🇦",
+  SUI: "🇨🇭",
+  BRA: "🇧🇷",
+  MAR: "🇲🇦",
+  HAI: "🇭🇹",
+  SCO: "🏴",
+  USA: "🇺🇸",
+  PAR: "🇵🇾",
+  AUS: "🇦🇺",
+  TUR: "🇹🇷",
+  GER: "🇩🇪",
+  CUW: "🇨🇼",
+  CIV: "🇨🇮",
+  ECU: "🇪🇨",
+  NED: "🇳🇱",
+  JPN: "🇯🇵",
+  SWE: "🇸🇪",
+  TUN: "🇹🇳",
+  BEL: "🇧🇪",
+  EGY: "🇪🇬",
+  IRN: "🇮🇷",
+  NZL: "🇳🇿",
+  ESP: "🇪🇸",
+  CPV: "🇨🇻",
+  KSA: "🇸🇦",
+  URU: "🇺🇾",
+  FRA: "🇫🇷",
+  SEN: "🇸🇳",
+  IRQ: "🇮🇶",
+  NOR: "🇳🇴",
+  ARG: "🇦🇷",
+  ALG: "🇩🇿",
+  AUT: "🇦🇹",
+  JOR: "🇯🇴",
+  POR: "🇵🇹",
+  COD: "🇨🇩",
+  UZB: "🇺🇿",
+  COL: "🇨🇴",
+  ENG: "🏴",
+  CRO: "🇭🇷",
+  GHA: "🇬🇭",
+  PAN: "🇵🇦"
+};
+
+    
     function parseScore(score) {
       if (!score) return null;
       const cleaned = score.trim().replace(/\s/g, "");
@@ -199,7 +251,32 @@
       row.forEach((cell, cellIndex) => {
         const element = rowIndex === 0 ? "th" : "td";
         const td = document.createElement(element);
-        td.textContent = cell;
+
+        if (rowIndex === 0 && cellIndex > 0) {
+
+  const teams = cell.split("-");
+
+  if (teams.length === 2) {
+
+    const homeFlag = flags[teams[0]] || "";
+    const awayFlag = flags[teams[1]] || "";
+
+    td.innerHTML = `
+      <div style="font-size:16px;">
+        ${homeFlag} - ${awayFlag}
+      </div>
+      <div>
+        ${cell}
+      </div>
+    `;
+
+  } else {
+    td.textContent = cell;
+  }
+
+} else {
+  td.textContent = cell;
+}
 
         tr.appendChild(td);
 
