@@ -1,75 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>⚽ Wyślij typy</title>
+  <title>🎯 Bonusy</title>
+
   <style>
-  body {
-    font-family: Arial;
-    background: #0b1020;
-    color: white;
-    margin: 0;
-    padding: 40px;
-  }
+    body {
+      font-family: Arial;
+      background: #0b1020;
+      color: white;
+      margin: 0;
+      padding: 40px;
+    }
 
-  h1 {
-    text-align: center;
-    margin-bottom: 30px;
-  }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-  #prediction-form {
-    max-width: 500px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+    #bonus-form {
+      max-width: 500px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-  input {
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    font-size: 16px;
-  }
+    input {
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
 
-  button {
-    padding: 14px;
-    background: #4fc3f7;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-  }
+    button {
+      padding: 14px;
+      background: #4fc3f7;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-  #message {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 18px;
-  }
-</style>
+    #message {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
 </head>
 
 <body>
 
-<form id="prediction-form">
+<h1>🎯 Bonusy</h1>
+
+<form id="bonus-form">
+
   <input name="name" placeholder="Imię" required>
 
-<input name="Winner" placeholder="Mistrz świata" required>
-<input name="TopScorer" placeholder="Król strzelców" required>
-  <input name="TopAssist" placeholder="Najlepszy asystent" required>
-<input name="BestPlayer" placeholder="MVP" required>
-<input name="YoungPlayer" placeholder="Young MVP" required>
-<input name="BestGoalkeeper" placeholder="Najlepszy bramkarz" required>
+  <input name="Winner" placeholder="Zwycięzca" required>
+  <input name="TopScorer" placeholder="Strzelec" required>
+  <input name="TopAssist" placeholder="Asystent" required>
+  <input name="MVP" placeholder="MVP" required>
+  <input name="YoungMVP" placeholder="Young MVP" required>
+  <input name="Goalkeeper" placeholder="Bramkarz" required>
 
-  <button type="submit">Wyślij typy</button>
+  <button type="submit">Wyślij bonusy</button>
+
 </form>
 
 <p id="message"></p>
 
 <script>
-const scriptUrl = "https://script.google.com/macros/s/AKfycbwd9U5uTtbMhjYWKpL0iLDlZfSAAyjzYIh4I_HWCoxTXT-Px772SLGeJxV4kcmbyRvv/exec";
 
-document.getElementById("prediction-form").addEventListener("submit", function(e) {
+const scriptUrl = "PASTE_YOUR_BONUS_SCRIPT_URL_HERE";
+
+document.getElementById("bonus-form").addEventListener("submit", function(e) {
+
   e.preventDefault();
 
   const formData = new FormData(e.target);
@@ -84,18 +91,30 @@ document.getElementById("prediction-form").addEventListener("submit", function(e
   })
   .then(response => response.json())
   .then(result => {
+
     if (result.success) {
-      document.getElementById("message").textContent = "Typy wysłane!";
+
+      document.getElementById("message").textContent =
+        "Bonusy wysłane!";
+
       e.target.reset();
+
     } else {
-      document.getElementById("message").textContent = result.message;
+
+      document.getElementById("message").textContent =
+        result.message;
     }
   })
   .catch(error => {
+
     console.error(error);
-    document.getElementById("message").textContent = "Błąd. Spróbuj ponownie.";
+
+    document.getElementById("message").textContent =
+      "Błąd. Spróbuj ponownie.";
   });
+
 });
+
 </script>
 
 </body>
