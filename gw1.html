@@ -387,11 +387,19 @@ const headerRow = formHeader.slice(1);
 // all submitted rows, without timestamp
 const submittedRows = rows.slice(1).map(row => row.slice(1));
 
-// find special Wynik row
-const actualRow = submittedRows.find(row => row[0].trim().toLowerCase() === "wynik");
+const actualRow = submittedRows.find(row =>
+  row[0] && row[0].trim().toLowerCase() === "wynik"
+);
 
-// all normal players
-const playerRows = submittedRows.filter(row => row[0].trim().toLowerCase() !== "wynik");
+if (!actualRow) {
+  document.getElementById("data-table").innerHTML =
+    "<tr><td>No Wynik row found yet. Submit one form response with Imię = Wynik.</td></tr>";
+  throw new Error("No Wynik row found");
+}
+
+const playerRows = submittedRows.filter(row =>
+  row[0] && row[0].trim().toLowerCase() !== "wynik"
+);
 
        const processedPlayers = playerRows.map(row => {
 
