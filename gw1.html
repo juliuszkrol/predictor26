@@ -78,20 +78,31 @@
       border-bottom: 2px solid #4fc3f7;
     }
 
-    .exact {
-      background: #b7f7c1;
-      font-weight: bold;
-    }
+   .points-badge {
+  display: inline-block;
+  margin-top: 2px;
+  padding: 1px 5px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: bold;
+}
 
-    .difference {
-      background: #ffd08a;
-      font-weight: bold;
-    }
+.points-4 {
+  background: #b7f7c1;
+}
 
-    .correct {
-      background: #fff3a3;
-      font-weight: bold;
-    }
+.points-2 {
+  background: #ffd08a;
+}
+
+.points-1 {
+  background: #fff3a3;
+}
+
+.points-0 {
+  background: #e5e5e5;
+  color: #666;
+}
 
     .total-cell {
       font-weight: bold;
@@ -218,28 +229,34 @@ const flags = {
     }
 
     function calculatePoints(prediction, actual) {
-      const pred = parseScore(prediction);
-      const act = parseScore(actual);
 
-      if (!pred || !act) return { points: 0, className: "" };
+  const pred = parseScore(prediction);
+  const act = parseScore(actual);
 
-      const predDiff = pred.home - pred.away;
-      const actDiff = act.home - act.away;
+  if (!pred || !act) {
+    return { points: 0 };
+  }
 
-      if (pred.home === act.home && pred.away === act.away) {
-        return { points: 4, className: "exact" };
-      }
+  const predDiff = pred.home - pred.away;
+  const actDiff = act.home - act.away;
 
-      if (predDiff === actDiff) {
-        return { points: 2, className: "difference" };
-      }
+  // EXACT
+  if (pred.home === act.home && pred.away === act.away) {
+    return { points: 4 };
+  }
 
-      if (getOutcome(pred) === getOutcome(act)) {
-        return { points: 1, className: "correct" };
-      }
+  // SAME GOAL DIFFERENCE
+  if (predDiff === actDiff) {
+    return { points: 2 };
+  }
 
-      return { points: 0, className: "" };
-    }
+  // CORRECT WINNER
+  if (getOutcome(pred) === getOutcome(act)) {
+    return { points: 1 };
+  }
+
+  return { points: 0 };
+}
 
     function renderRow(row, rowIndex, totalPoints = "") {
       const tr = document.createElement("tr");
@@ -309,25 +326,33 @@ const awayFlag = flags[teams[1].trim()] || "";
         const actualRow = rows[1];
         const playerRows = rows.slice(2);
 
-        const processedPlayers = playerRows.map(row => {
-          let total = 0;
-          const cellClasses = [];
+       const processedPlayers = playerRows.map(row => {
 
-          row.forEach((cell, cellIndex) => {
-            if (cellIndex > 0) {
-              const actualResult = actualRow[cellIndex];
-              const result = calculatePoints(cell, actualResult);
-              total += result.points;
-              cellClasses[cellIndex] = result.className;
-            }
-          });
+  let total = 0;
+  const cellPoints = [];
 
-          return {
-            row,
-            total,
-            cellClasses
-          };
-        });
+  row.forEach((cell, cellIndex) => {
+
+    if (cellIndex > 0) {
+
+      const actualResult = actualRow[cellIndex];
+
+      const result = calculatePoints(cell, actualResult);
+
+      total += result.points;
+
+      cellPoints[cellIndex] = result.points;
+    }
+
+  });
+
+  return {
+    row,
+    total,
+    cellPoints
+  };
+
+});
 
         processedPlayers.sort((a, b) => b.total - a.total);
         
@@ -349,12 +374,21 @@ const awayFlag = flags[teams[1].trim()] || "";
             nameCell.classList.add("bronze");
           }
 
-          player.cellClasses.forEach((className, cellIndex) => {
-            if (!className) return;
+        player.cellPoints.forEach((points, cellIndex) => {
 
-            const displayedCellIndex = cellIndex + 1;
-            tr.children[displayedCellIndex].classList.add(className);
-          });
+  if (cellIndex === 0) return;
+
+  const displayedCellIndex = cellIndex + 1;
+
+  const td = tr.children[displayedCellIndex];
+
+  td.innerHTML = `
+    <div>${player.row[cellIndex]}</div>
+    <div class="points-badge points-${points}">
+      ${points}
+    </div>
+  `;
+});
 
           table.appendChild(tr);
 
