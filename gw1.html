@@ -173,57 +173,83 @@
       return { points: 0, className: "" };
     }
 
+    function renderRow(row, rowIndex, totalPoints = "") {
+      const tr = document.createElement("tr");
+
+      if (rowIndex === 1) {
+        tr.classList.add("actual-row");
+      }
+
+      row.forEach((cell, cellIndex) => {
+        const element = rowIndex === 0 ? "th" : "td";
+        const td = document.createElement(element);
+        td.textContent = cell;
+
+        tr.appendChild(td);
+
+        if (cellIndex === 0) {
+          const totalCell = document.createElement(rowIndex === 0 ? "th" : "td");
+          totalCell.classList.add("total-cell");
+
+          if (rowIndex === 0) {
+            totalCell.textContent = "Total";
+          } else if (rowIndex === 1) {
+            totalCell.textContent = "";
+          } else {
+            totalCell.textContent = totalPoints;
+          }
+
+          tr.appendChild(totalCell);
+        }
+      });
+
+      return tr;
+    }
+
     fetch(csvUrl)
       .then(response => response.text())
       .then(data => {
         const rows = data.trim().split("\n").map(row => row.split(","));
         const table = document.getElementById("data-table");
 
-        rows.forEach((row, rowIndex) => {
-          const tr = document.createElement("tr");
+        const headerRow = rows[0];
+        const actualRow = rows[1];
+        const playerRows = rows.slice(2);
 
-          if (rowIndex === 1) {
-            tr.classList.add("actual-row");
-          }
-
-          let totalPoints = 0;
+        const processedPlayers = playerRows.map(row => {
+          let total = 0;
+          const cellClasses = [];
 
           row.forEach((cell, cellIndex) => {
-            const element = rowIndex === 0 ? "th" : "td";
-            const td = document.createElement(element);
-            td.textContent = cell;
-
-            if (rowIndex > 1 && cellIndex > 0) {
-              const actualResult = rows[1][cellIndex];
+            if (cellIndex > 0) {
+              const actualResult = actualRow[cellIndex];
               const result = calculatePoints(cell, actualResult);
-              totalPoints += result.points;
-
-              if (result.className) {
-                td.classList.add(result.className);
-              }
-            }
-
-            tr.appendChild(td);
-
-            if (cellIndex === 0) {
-              const totalCell = document.createElement(rowIndex === 0 ? "th" : "td");
-              totalCell.classList.add("total-cell");
-
-              if (rowIndex === 0) {
-                totalCell.textContent = "Total";
-              } else if (rowIndex === 1) {
-                totalCell.textContent = "";
-              } else {
-                totalCell.textContent = totalPoints;
-              }
-
-              tr.appendChild(totalCell);
+              total += result.points;
+              cellClasses[cellIndex] = result.className;
             }
           });
 
-          if (rowIndex > 1) {
-            tr.children[1].textContent = totalPoints;
-          }
+          return {
+            row,
+            total,
+            cellClasses
+          };
+        });
+
+        processedPlayers.sort((a, b) => b.total - a.total);
+
+        table.appendChild(renderRow(headerRow, 0));
+        table.appendChild(renderRow(actualRow, 1));
+
+        processedPlayers.forEach(player => {
+          const tr = renderRow(player.row, 2, player.total);
+
+          player.cellClasses.forEach((className, cellIndex) => {
+            if (!className) return;
+
+            const displayedCellIndex = cellIndex + 1;
+            tr.children[displayedCellIndex].classList.add(className);
+          });
 
           table.appendChild(tr);
         });
