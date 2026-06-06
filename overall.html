@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Overall Leaderboard - Predictor '26</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0b1020;
+      color: white;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #1a2238;
+      padding: 40px;
+      border-radius: 16px;
+    }
+
+    h1 {
+      font-size: 48px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      color: black;
+      margin-top: 30px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th {
+      background: #4fc3f7;
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      font-weight: bold;
+    }
+
+    .gold {
+      background: #ffd700;
+    }
+
+    .silver {
+      background: #c0c0c0;
+    }
+
+    .bronze {
+      background: #cd7f32;
+      color: white;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 14px 24px;
+      background: #4fc3f7;
+      color: black;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>🏆 Overall Leaderboard</h1>
+
+    <p>Total points from all gameweeks.</p>
+
+    <table id="overall-table">
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Total</th>
+        <th>Kolejka 1</th>
+        <th>Kolejka 2</th>
+        <th>Kolejka 3</th>
+      </tr>
+    </table>
+
+    <a class="button" href="leaderboard.html">
+      Powrót do wyników
+    </a>
+
+  </div>
+
+  <script>
+    const gameweeks = [
+      {
+        name: "Kolejka 1",
+        url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTpZjNU0JBFZgJA0ebw6Xo5tHQi2GlBaYSYB-MaJ9u3ZXKjDCdYIijJ2gCoDja4cVfK5p8iq2vppsS_/pub?gid=1429651543&single=true&output=csv"
+      },
+      {
+        name: "Kolejka 2",
+        url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTpZjNU0JBFZgJA0ebw6Xo5tHQi2GlBaYSYB-MaJ9u3ZXKjDCdYIijJ2gCoDja4cVfK5p8iq2vppsS_/pub?gid=1988668610&single=true&output=csv"
+      },
+      {
+        name: "Kolejka 3",
+        url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTpZjNU0JBFZgJA0ebw6Xo5tHQi2GlBaYSYB-MaJ9u3ZXKjDCdYIijJ2gCoDja4cVfK5p8iq2vppsS_/pub?gid=1144555630&single=true&output=csv"
+      }
+    ];
+
+    function parseScore(score) {
+      if (!score) return null;
+      const cleaned = score.trim().replace(/\s/g, "");
+      const match = cleaned.match(/^(\d+)[-:](\d+)$/);
+      if (!match) return null;
+
+      return {
+        home: Number(match[1]),
+        away: Number(match[2])
+      };
+    }
+
+    function getOutcome(score) {
+      if (score.home > score.away) return "home";
+      if (score.home < score.away) return "away";
+      return "draw";
+    }
+
+    function calculatePoints(prediction, actual) {
+      const pred = parseScore(prediction);
+      const act = parseScore(actual);
+
+      if (!pred || !act) return 0;
+
+      const predDiff = pred.home - pred.away;
+      const actDiff = act.home - act.away;
+
+      if (pred.home === act.home && pred.away === act.away) return 4;
+      if (predDiff === actDiff) return 2;
+      if (getOutcome(pred) === getOutcome(act)) return 1;
+
+      return 0;
+    }
+
+    async function loadGameweek(gameweek) {
+      const response = await fetch(gameweek.url);
+      const text = await response.text();
+
+      const rows = text.trim().split("\n").map(row => row.split(","));
+
+      const actualRow = rows[1];
+      const playerRows = rows.slice(2);
+
+      const scores = {};
+
+      playerRows.forEach(row => {
+        const name = row[0];
+        let total = 0;
+
+        row.forEach((cell, index) => {
+          if (index > 0) {
+            total += calculatePoints(cell, actualRow[index]);
+          }
+        });
+
+        scores[name] = total;
+      });
+
+      return scores;
+    }
+
+    async function buildOverallTable() {
+      const allScores = {};
+
+      for (let i = 0; i < gameweeks.length; i++) {
+        const scores = await loadGameweek(gameweeks[i]);
+
+        Object.keys(scores).forEach(name => {
+          if (!allScores[name]) {
+            allScores[name] = {
+              name: name,
+              total: 0,
+              gameweeks: [0, 0, 0]
+            };
+          }
+
+          allScores[name].gameweeks[i] = scores[name];
+          allScores[name].total += scores[name];
+        });
+      }
+
+      const players = Object.values(allScores).sort((a, b) => b.total - a.total);
+
+      const table = document.getElementById("overall-table");
+
+      players.forEach((player, index) => {
+        const tr = document.createElement("tr");
+
+        if (index === 0) tr.classList.add("gold");
+        if (index === 1) tr.classList.add("silver");
+        if (index === 2) tr.classList.add("bronze");
+
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${player.name}</td>
+          <td>${player.total}</td>
+          <td>${player.gameweeks[0]}</td>
+          <td>${player.gameweeks[1]}</td>
+          <td>${player.gameweeks[2]}</td>
+        `;
+
+        table.appendChild(tr);
+      });
+    }
+
+    buildOverallTable();
+  </script>
+
+</body>
+</html>
