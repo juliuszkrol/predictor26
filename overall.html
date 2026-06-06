@@ -59,6 +59,11 @@
       background: #cd7f32;
       color: white;
     }
+    .total-column {
+  background: #1e3a5f !important;
+  color: white !important;
+  font-weight: bold;
+}
 
     .button {
       display: inline-block;
@@ -246,7 +251,7 @@
      tr.innerHTML = `
   <td>${index + 1}</td>
   <td>${player.name}</td>
-  <td>${player.total}</td>
+  <td class="total-column">${player.total}</td>
   <td>${player.gameweeks[0]}</td>
   <td>${player.gameweeks[1]}</td>
   <td>${player.gameweeks[2]}</td>
