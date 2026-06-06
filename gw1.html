@@ -254,12 +254,12 @@ const flags = {
 
         if (rowIndex === 0 && cellIndex > 0) {
 
-  const teams = cell.split("-");
+  const teams = cell.trim().split("-");
 
   if (teams.length === 2) {
 
-    const homeFlag = flags[teams[0]] || "";
-    const awayFlag = flags[teams[1]] || "";
+   const homeFlag = flags[teams[0].trim()] || "";
+const awayFlag = flags[teams[1].trim()] || "";
 
     td.innerHTML = `
       <div style="font-size:16px;">
