@@ -25,27 +25,43 @@
       font-size: 48px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      color: black;
-      margin-top: 30px;
-      border-radius: 12px;
-      overflow: hidden;
-    }
+  table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  color: black;
+  margin-top: 30px;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 14px;
+}
 
-    th {
-      background: #4fc3f7;
-      padding: 10px;
-      font-weight: bold;
-    }
+th {
+  background: #4fc3f7;
+  padding: 8px;
+  font-weight: bold;
+  font-size: 13px;
+}
 
-    td {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-      font-weight: bold;
-    }
+td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.total-column {
+  background: #1e3a5f !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+#last-updated {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
 
     .gold {
       background: #ffd700;
@@ -59,11 +75,6 @@
       background: #cd7f32;
       color: white;
     }
-    .total-column {
-  background: #1e3a5f !important;
-  color: white !important;
-  font-weight: bold;
-}
 
     .button {
       display: inline-block;
@@ -103,6 +114,9 @@
 <th>Bonusy</th>
       </tr>
     </table>
+    <p id="last-updated"></p>
+
+<a class="button" href="leaderboard.html">
 
     <a class="button" href="leaderboard.html">
       Powrót do wyników
@@ -268,6 +282,16 @@
     }
 
     buildOverallTable();
+    const now = new Date();
+
+document.getElementById("last-updated").textContent =
+  "Last updated: " +
+  now.toLocaleDateString() +
+  " " +
+  now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
   </script>
 
 </body>
