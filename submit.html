@@ -1,0 +1,33 @@
+<form id="prediction-form">
+  <input name="name" placeholder="Imię" required>
+
+  <input name="MEX-RSA" placeholder="MEX-RSA, e.g. 2-1" required>
+  <input name="KOR-CZE" placeholder="KOR-CZE, e.g. 1-1" required>
+  <input name="CAN-BIH" placeholder="CAN-BIH, e.g. 0-2" required>
+
+  <button type="submit">Wyślij typy</button>
+</form>
+
+<p id="message"></p>
+
+<script>
+  const scriptUrl = "https://script.google.com/macros/s/AKfycbzqVAZ5JHzBOqnB9oaSWtWLBq3rMkU-2bB8toKke341Eceu5fsjR9h6x_n3_vwX5JVV/exec";
+  document.getElementById("prediction-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
+    fetch(scriptUrl, {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
+    .then(() => {
+      document.getElementById("message").textContent = "Typy wysłane!";
+      e.target.reset();
+    })
+    .catch(() => {
+      document.getElementById("message").textContent = "Błąd. Spróbuj ponownie.";
+    });
+  });
+</script>
