@@ -259,31 +259,18 @@
         table.appendChild(renderRow(actualRow, 1));
 
         processedPlayers.forEach((player, index) => {
-
-  const tr = renderRow(player.row, 2, player.total);
-
-  // TOP 3 COLORS
-  const nameCell = tr.children[0];
-
-  if (index === 0) {
-    nameCell.classList.add("gold");
-  } else if (index === 1) {
-    nameCell.classList.add("silver");
-  } else if (index === 2) {
-    nameCell.classList.add("bronze");
-  }
-
-  player.cellClasses.forEach((className, cellIndex) => {
-    if (!className) return;
-
-    const displayedCellIndex = cellIndex + 1;
-    tr.children[displayedCellIndex].classList.add(className);
-  });
-
-  table.appendChild(tr);
-
-});
+       
           const tr = renderRow(player.row, 2, player.total);
+
+          const nameCell = tr.children[0];
+
+          if (index === 0) {
+            nameCell.classList.add("gold");
+          } else if (index === 1) {
+            nameCell.classList.add("silver");
+          } else if (index === 2) {
+            nameCell.classList.add("bronze");
+          }
 
           player.cellClasses.forEach((className, cellIndex) => {
             if (!className) return;
@@ -293,9 +280,11 @@
           });
 
           table.appendChild(tr);
+
         });
       });
   </script>
+     
 
 </body>
 </html>
