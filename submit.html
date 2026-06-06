@@ -10,24 +10,34 @@
 
 <p id="message"></p>
 
-<script>
-  const scriptUrl = "https://script.google.com/macros/s/AKfycbwD15dPGC31r8cMG2aEyW-YQI8k7G_yeVP2Wj1e8HDp54e1_ebYP9baKAxHqZ51sJeE/exec";
-  document.getElementById("prediction-form").addEventListener("submit", function(e) {
-    e.preventDefault();
+fetch(scriptUrl, {
+  method: "POST",
+  body: JSON.stringify(data),
+  headers: {
+    "Content-Type": "text/plain;charset=utf-8"
+  }
+})
+.then(response => response.json())
+.then(result => {
 
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
+  if (result.success) {
 
-    fetch(scriptUrl, {
-      method: "POST",
-      body: JSON.stringify(data)
-    })
-    .then(() => {
-      document.getElementById("message").textContent = "Typy wysłane!";
-      e.target.reset();
-    })
-    .catch(() => {
-      document.getElementById("message").textContent = "Błąd. Spróbuj ponownie.";
-    });
-  });
+    document.getElementById("message").textContent =
+      "Typy wysłane!";
+
+    e.target.reset();
+
+  } else {
+
+    document.getElementById("message").textContent =
+      result.message;
+  }
+})
+.catch(error => {
+
+  console.error(error);
+
+  document.getElementById("message").textContent =
+    "Błąd. Spróbuj ponownie.";
+});
 </script>
