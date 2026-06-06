@@ -58,7 +58,8 @@
       white-space: nowrap;
     }
 
-    td:first-child, th:first-child {
+    td:first-child,
+    th:first-child {
       text-align: left;
       font-weight: bold;
       position: sticky;
@@ -78,53 +79,55 @@
       border-bottom: 2px solid #4fc3f7;
     }
 
-   .points-badge {
-  display: inline-block;
-  margin-top: 2px;
-  padding: 1px 5px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: bold;
-}
+    .points-badge {
+      display: inline-block;
+      margin-top: 2px;
+      padding: 1px 5px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: bold;
+    }
 
-.points-4 {
-  background: #b7f7c1;
-}
+    .points-4 {
+      background: #b7f7c1;
+    }
 
-.points-2 {
-  background: #ffd08a;
-}
+    .points-2 {
+      background: #ffd08a;
+    }
 
-.points-1 {
-  background: #fff3a3;
-}
+    .points-1 {
+      background: #fff3a3;
+    }
 
-.points-0 {
-  background: #e5e5e5;
-  color: #666;
-}
+    .points-0 {
+      background: #e5e5e5;
+      color: #666;
+    }
 
     .total-cell {
       font-weight: bold;
       background: #e0e7ff;
     }
-.gold {
-  background: #ffd700 !important;
-  color: black !important;
-  font-weight: bold;
-}
 
-.silver {
-  background: #c0c0c0 !important;
-  color: black !important;
-  font-weight: bold;
-}
+    .gold {
+      background: #ffd700 !important;
+      color: black !important;
+      font-weight: bold;
+    }
 
-.bronze {
-  background: #cd7f32 !important;
-  color: white !important;
-  font-weight: bold;
-}
+    .silver {
+      background: #c0c0c0 !important;
+      color: black !important;
+      font-weight: bold;
+    }
+
+    .bronze {
+      background: #cd7f32 !important;
+      color: white !important;
+      font-weight: bold;
+    }
+
     .button {
       display: inline-block;
       margin-top: 30px;
@@ -150,57 +153,44 @@
       <table id="data-table"></table>
     </div>
 
-    <p id="last-updated" style="
-  margin-top: 12px;
-  font-size: 13px;
-  color: #9ca3af;
-">
-</p>
+    <p id="last-updated" style="margin-top:12px; font-size:13px; color:#9ca3af;"></p>
 
-<div style="
-  margin-top: 35px;
-  padding: 20px;
-  background: #111827;
-  border-radius: 12px;
-  text-align: left;
-  font-size: 14px;
-  line-height: 1.7;
-">
+    <div style="
+      margin-top: 35px;
+      padding: 20px;
+      background: #111827;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.7;
+    ">
+      <h3 style="margin-top:0;">📖 Punktacja</h3>
 
-  <h3 style="margin-top:0;">📖 Punktacja</h3>
+      <p><strong>4 punkty</strong> — dokładny wynik</p>
 
-  <p>
-    <strong>4 punkty</strong> — dokładny wynik
-  </p>
+      <p>
+        <strong>2 punkty</strong> — różnica bramek
+        <br>
+        Przykład: obstawione 2:0, wynik 3:1
+      </p>
 
-  <p>
-    <strong>2 punkty</strong> — różnica bramek
-    <br>
-    Przykład: obstawione 2:0, wynik 3:1
-  </p>
+      <p><strong>1 punkt</strong> — właściwy zwycięzca</p>
 
-  <p>
-    <strong>1 punkt</strong> — właściwy zwycięzca
-  </p>
+      <p><strong>0 punktów</strong> — błędny wynik</p>
 
-  <p>
-    <strong>0 punktów</strong> — błędny wynik
-  </p>
+      <hr style="border-color:#374151; margin:18px 0;">
 
-  <hr style="border-color:#374151; margin:18px 0;">
+      <p>
+        🟢 = 4 punkty
+        <br>
+        🟠 = 2 punkty
+        <br>
+        🟡 = 1 punkt
+        <br>
+        ⚪ = 0 punktów
+      </p>
+    </div>
 
-  <p>
-    🟢 = 4 punkty
-    <br>
-    🟠 = 2 punkty
-    <br>
-    🟡 = 1 punkt
-    <br>
-    ⚪ = 0 punktów
-  </p>
-
-</div>
-    
     <a class="button" href="leaderboard.html">
       Powrót do wyników
     </a>
@@ -209,62 +199,63 @@
   <script>
     const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTpZjNU0JBFZgJA0ebw6Xo5tHQi2GlBaYSYB-MaJ9u3ZXKjDCdYIijJ2gCoDja4cVfK5p8iq2vppsS_/pub?gid=1429651543&single=true&output=csv";
 
-const flags = {
-  MEX: "🇲🇽",
-  RSA: "🇿🇦",
-  KOR: "🇰🇷",
-  CZE: "🇨🇿",
-  CAN: "🇨🇦",
-  BIH: "🇧🇦",
-  QAT: "🇶🇦",
-  SUI: "🇨🇭",
-  BRA: "🇧🇷",
-  MAR: "🇲🇦",
-  HAI: "🇭🇹",
-  SCO: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
-  USA: "🇺🇸",
-  PAR: "🇵🇾",
-  AUS: "🇦🇺",
-  TUR: "🇹🇷",
-  GER: "🇩🇪",
-  CUW: "🇨🇼",
-  CIV: "🇨🇮",
-  ECU: "🇪🇨",
-  NED: "🇳🇱",
-  JPN: "🇯🇵",
-  SWE: "🇸🇪",
-  TUN: "🇹🇳",
-  BEL: "🇧🇪",
-  EGY: "🇪🇬",
-  IRN: "🇮🇷",
-  NZL: "🇳🇿",
-  ESP: "🇪🇸",
-  CPV: "🇨🇻",
-  KSA: "🇸🇦",
-  URU: "🇺🇾",
-  FRA: "🇫🇷",
-  SEN: "🇸🇳",
-  IRQ: "🇮🇶",
-  NOR: "🇳🇴",
-  ARG: "🇦🇷",
-  ALG: "🇩🇿",
-  AUT: "🇦🇹",
-  JOR: "🇯🇴",
-  POR: "🇵🇹",
-  COD: "🇨🇩",
-  UZB: "🇺🇿",
-  COL: "🇨🇴",
-  ENG: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-  CRO: "🇭🇷",
-  GHA: "🇬🇭",
-  PAN: "🇵🇦",
-};
+    const flags = {
+      MEX: "🇲🇽",
+      RSA: "🇿🇦",
+      KOR: "🇰🇷",
+      CZE: "🇨🇿",
+      CAN: "🇨🇦",
+      BIH: "🇧🇦",
+      QAT: "🇶🇦",
+      SUI: "🇨🇭",
+      BRA: "🇧🇷",
+      MAR: "🇲🇦",
+      HAI: "🇭🇹",
+      SCO: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      USA: "🇺🇸",
+      PAR: "🇵🇾",
+      AUS: "🇦🇺",
+      TUR: "🇹🇷",
+      GER: "🇩🇪",
+      CUW: "🇨🇼",
+      CIV: "🇨🇮",
+      ECU: "🇪🇨",
+      NED: "🇳🇱",
+      JPN: "🇯🇵",
+      SWE: "🇸🇪",
+      TUN: "🇹🇳",
+      BEL: "🇧🇪",
+      EGY: "🇪🇬",
+      IRN: "🇮🇷",
+      NZL: "🇳🇿",
+      ESP: "🇪🇸",
+      CPV: "🇨🇻",
+      KSA: "🇸🇦",
+      URU: "🇺🇾",
+      FRA: "🇫🇷",
+      SEN: "🇸🇳",
+      IRQ: "🇮🇶",
+      NOR: "🇳🇴",
+      ARG: "🇦🇷",
+      ALG: "🇩🇿",
+      AUT: "🇦🇹",
+      JOR: "🇯🇴",
+      POR: "🇵🇹",
+      COD: "🇨🇩",
+      UZB: "🇺🇿",
+      COL: "🇨🇴",
+      ENG: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      CRO: "🇭🇷",
+      GHA: "🇬🇭",
+      PAN: "🇵🇦"
+    };
 
-    
     function parseScore(score) {
       if (!score) return null;
+
       const cleaned = score.trim().replace(/\s/g, "");
       const match = cleaned.match(/^(\d+)[-:](\d+)$/);
+
       if (!match) return null;
 
       return {
@@ -280,34 +271,30 @@ const flags = {
     }
 
     function calculatePoints(prediction, actual) {
+      const pred = parseScore(prediction);
+      const act = parseScore(actual);
 
-  const pred = parseScore(prediction);
-  const act = parseScore(actual);
+      if (!pred || !act) {
+        return { points: 0 };
+      }
 
-  if (!pred || !act) {
-    return { points: 0 };
-  }
+      const predDiff = pred.home - pred.away;
+      const actDiff = act.home - act.away;
 
-  const predDiff = pred.home - pred.away;
-  const actDiff = act.home - act.away;
+      if (pred.home === act.home && pred.away === act.away) {
+        return { points: 4 };
+      }
 
-  // EXACT
-  if (pred.home === act.home && pred.away === act.away) {
-    return { points: 4 };
-  }
+      if (predDiff === actDiff) {
+        return { points: 2 };
+      }
 
-  // SAME GOAL DIFFERENCE
-  if (predDiff === actDiff) {
-    return { points: 2 };
-  }
+      if (getOutcome(pred) === getOutcome(act)) {
+        return { points: 1 };
+      }
 
-  // CORRECT WINNER
-  if (getOutcome(pred) === getOutcome(act)) {
-    return { points: 1 };
-  }
-
-  return { points: 0 };
-}
+      return { points: 0 };
+    }
 
     function renderRow(row, rowIndex, totalPoints = "") {
       const tr = document.createElement("tr");
@@ -321,35 +308,35 @@ const flags = {
         const td = document.createElement(element);
 
         if (rowIndex === 0 && cellIndex > 0) {
+          const teams = cell.trim().split("-");
 
-  const teams = cell.trim().split("-");
+          if (teams.length === 2) {
+            const homeCode = teams[0].trim().toUpperCase();
+            const awayCode = teams[1].trim().toUpperCase();
 
-  if (teams.length === 2) {
+            const homeFlag = flags[homeCode] || "";
+            const awayFlag = flags[awayCode] || "";
 
-   const homeFlag = flags[teams[0].trim()] || "";
-const awayFlag = flags[teams[1].trim()] || "";
-
-    td.innerHTML = `
-      <div style="font-size:16px;">
-        ${homeFlag} - ${awayFlag}
-      </div>
-      <div>
-        ${cell}
-      </div>
-    `;
-
-  } else {
-    td.textContent = cell;
-  }
-
-} else {
-  td.textContent = cell;
-}
+            td.innerHTML = `
+              <div style="font-size:16px;">
+                ${homeFlag} - ${awayFlag}
+              </div>
+              <div>
+                ${cell}
+              </div>
+            `;
+          } else {
+            td.textContent = cell;
+          }
+        } else {
+          td.textContent = cell;
+        }
 
         tr.appendChild(td);
 
         if (cellIndex === 0) {
           const totalCell = document.createElement(rowIndex === 0 ? "th" : "td");
+
           totalCell.classList.add("total-cell");
 
           if (rowIndex === 0) {
@@ -372,71 +359,39 @@ const awayFlag = flags[teams[1].trim()] || "";
       .then(data => {
         const rows = data.trim().split("\n").map(row => row.split(","));
 
-const table = document.getElementById("data-table");
+        const table = document.getElementById("data-table");
 
-// Google Form structure:
-// A = timestamp
-// B = name
-// C onwards = predictions
+        const headerRow = rows[0];
+        const actualRow = rows[1];
+        const playerRows = rows.slice(2);
 
-const formHeader = rows[0];
+        const processedPlayers = playerRows.map(row => {
+          let total = 0;
+          const cellPoints = [];
 
-// remove timestamp column
-const headerRow = formHeader.slice(1);
+          row.forEach((cell, cellIndex) => {
+            if (cellIndex > 0) {
+              const actualResult = actualRow[cellIndex];
+              const result = calculatePoints(cell, actualResult);
 
-// all submitted rows, without timestamp
-const submittedRows = rows.slice(1).map(row => row.slice(1));
+              total += result.points;
+              cellPoints[cellIndex] = result.points;
+            }
+          });
 
-const actualRow = submittedRows.find(row =>
-  row[0] && row[0].trim().toLowerCase() === "wynik"
-);
-
-if (!actualRow) {
-  document.getElementById("data-table").innerHTML =
-    "<tr><td>No Wynik row found yet. Submit one form response with Imię = Wynik.</td></tr>";
-  throw new Error("No Wynik row found");
-}
-
-const playerRows = submittedRows.filter(row =>
-  row[0] && row[0].trim().toLowerCase() !== "wynik"
-);
-
-       const processedPlayers = playerRows.map(row => {
-
-  let total = 0;
-  const cellPoints = [];
-
-  row.forEach((cell, cellIndex) => {
-
-    if (cellIndex > 0) {
-
-      const actualResult = actualRow[cellIndex];
-
-      const result = calculatePoints(cell, actualResult);
-
-      total += result.points;
-
-      cellPoints[cellIndex] = result.points;
-    }
-
-  });
-
-  return {
-    row,
-    total,
-    cellPoints
-  };
-
-});
+          return {
+            row,
+            total,
+            cellPoints
+          };
+        });
 
         processedPlayers.sort((a, b) => b.total - a.total);
-        
 
         table.appendChild(renderRow(headerRow, 0));
         table.appendChild(renderRow(actualRow, 1));
 
         processedPlayers.forEach((player, index) => {
-       
           const tr = renderRow(player.row, 2, player.total);
 
           const nameCell = tr.children[0];
@@ -449,41 +404,35 @@ const playerRows = submittedRows.filter(row =>
             nameCell.classList.add("bronze");
           }
 
-        player.cellPoints.forEach((points, cellIndex) => {
+          player.cellPoints.forEach((points, cellIndex) => {
+            if (cellIndex === 0) return;
 
-  if (cellIndex === 0) return;
+            const displayedCellIndex = cellIndex + 1;
+            const td = tr.children[displayedCellIndex];
 
-  const displayedCellIndex = cellIndex + 1;
-
-  const td = tr.children[displayedCellIndex];
-
-  td.innerHTML = `
-    <div>${player.row[cellIndex]}</div>
-    <div class="points-badge points-${points}">
-      ${points}
-    </div>
-  `;
-});
+            td.innerHTML = `
+              <div>${player.row[cellIndex]}</div>
+              <div class="points-badge points-${points}">
+                ${points}
+              </div>
+            `;
+          });
 
           table.appendChild(tr);
-
-          
-
         });
 
         const now = new Date();
 
-document.getElementById("last-updated").textContent =
-  "Last updated: " +
-  now.toLocaleDateString() +
-  " " +
-  now.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
+        document.getElementById("last-updated").textContent =
+          "Last updated: " +
+          now.toLocaleDateString() +
+          " " +
+          now.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          });
       });
   </script>
-     
 
 </body>
 </html>
