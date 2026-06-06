@@ -371,11 +371,27 @@ const awayFlag = flags[teams[1].trim()] || "";
       .then(response => response.text())
       .then(data => {
         const rows = data.trim().split("\n").map(row => row.split(","));
-        const table = document.getElementById("data-table");
 
-        const headerRow = rows[0];
-        const actualRow = rows[1];
-        const playerRows = rows.slice(2);
+const table = document.getElementById("data-table");
+
+// Google Form structure:
+// A = timestamp
+// B = name
+// C onwards = predictions
+
+const formHeader = rows[0];
+
+// remove timestamp column
+const headerRow = formHeader.slice(1);
+
+// all submitted rows, without timestamp
+const submittedRows = rows.slice(1).map(row => row.slice(1));
+
+// find special Wynik row
+const actualRow = submittedRows.find(row => row[0].trim().toLowerCase() === "wynik");
+
+// all normal players
+const playerRows = submittedRows.filter(row => row[0].trim().toLowerCase() !== "wynik");
 
        const processedPlayers = playerRows.map(row => {
 
