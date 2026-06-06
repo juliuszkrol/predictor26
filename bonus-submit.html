@@ -1,1 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>⚽ Wyślij typy</title>
+  <style>
+  body {
+    font-family: Arial;
+    background: #0b1020;
+    color: white;
+    margin: 0;
+    padding: 40px;
+  }
 
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  #prediction-form {
+    max-width: 500px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  input {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+  }
+
+  button {
+    padding: 14px;
+    background: #4fc3f7;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  #message {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+  }
+</style>
+</head>
+
+<body>
+
+<form id="prediction-form">
+  <input name="name" placeholder="Imię" required>
+
+<input name="Winner" placeholder="Mistrz świata" required>
+<input name="TopScorer" placeholder="Król strzelców" required>
+  <input name="TopAssist" placeholder="Najlepszy asystent" required>
+<input name="BestPlayer" placeholder="MVP" required>
+<input name="YoungPlayer" placeholder="Young MVP" required>
+<input name="BestGoalkeeper" placeholder="Najlepszy bramkarz" required>
+
+  <button type="submit">Wyślij typy</button>
+</form>
+
+<p id="message"></p>
+
+<script>
+const scriptUrl = "https://script.google.com/macros/s/AKfycbwd9U5uTtbMhjYWKpL0iLDlZfSAAyjzYIh4I_HWCoxTXT-Px772SLGeJxV4kcmbyRvv/exec";
+
+document.getElementById("prediction-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData.entries());
+
+  fetch(scriptUrl, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    }
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result.success) {
+      document.getElementById("message").textContent = "Typy wysłane!";
+      e.target.reset();
+    } else {
+      document.getElementById("message").textContent = result.message;
+    }
+  })
+  .catch(error => {
+    console.error(error);
+    document.getElementById("message").textContent = "Błąd. Spróbuj ponownie.";
+  });
+});
+</script>
+
+</body>
+</html>
