@@ -1,84 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Submit Predictions</title>
+  <title>Wyślij typy</title>
 </head>
 
 <body>
 
 <form id="prediction-form">
-
   <input name="name" placeholder="Imię" required>
 
   <input name="MEX-RSA" placeholder="MEX-RSA, e.g. 2-1" required>
-
   <input name="KOR-CZE" placeholder="KOR-CZE, e.g. 1-1" required>
-
   <input name="CAN-BIH" placeholder="CAN-BIH, e.g. 0-2" required>
 
-  <button type="submit">
-    Wyślij typy
-  </button>
-
+  <button type="submit">Wyślij typy</button>
 </form>
 
 <p id="message"></p>
 
 <script>
+const scriptUrl = "https://script.google.com/macros/s/AKfycbwd9U5uTtbMhjYWKpL0iLDlZfSAAyjzYIh4I_HWCoxTXT-Px772SLGeJxV4kcmbyRvv/exec";
 
-const scriptUrl =
-"https://script.google.com/macros/s/AKfycbwd9U5uTtbMhjYWKpL0iLDlZfSAAyjzYIh4I_HWCoxTXT-Px772SLGeJxV4kcmbyRvv/exec";
+document.getElementById("prediction-form").addEventListener("submit", function(e) {
+  e.preventDefault();
 
-document
-  .getElementById("prediction-form")
-  .addEventListener("submit", function(e) {
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData.entries());
 
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-
-    const data = Object.fromEntries(formData.entries());
-
-    fetch(scriptUrl, {
-
-      method: "POST",
-
-      body: JSON.stringify(data),
-
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      }
-
-    })
-
-    .then(response => response.json())
-
-    .then(result => {
-
-      if (result.success) {
-
-        document.getElementById("message").textContent =
-          "Typy wysłane!";
-
-        e.target.reset();
-
-      } else {
-
-        document.getElementById("message").textContent =
-          result.message;
-      }
-    })
-
-    .catch(error => {
-
-      console.error(error);
-
-      document.getElementById("message").textContent =
-        "Błąd. Spróbuj ponownie.";
-    });
-
+  fetch(scriptUrl, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    }
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result.success) {
+      document.getElementById("message").textContent = "Typy wysłane!";
+      e.target.reset();
+    } else {
+      document.getElementById("message").textContent = result.message;
+    }
+  })
+  .catch(error => {
+    console.error(error);
+    document.getElementById("message").textContent = "Błąd. Spróbuj ponownie.";
+  });
 });
-
 </script>
 
 </body>
