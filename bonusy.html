@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bonusy - Predictor '26</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0b1020;
+      color: white;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: #1a2238;
+      padding: 40px;
+      border-radius: 16px;
+    }
+
+    h1 {
+      font-size: 48px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      color: black;
+      margin-top: 30px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th {
+      background: #4fc3f7;
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .actual-row td {
+      background: #1e3a5f;
+      color: white;
+    }
+
+    .points-badge {
+      display: inline-block;
+      margin-top: 4px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .points-5 {
+      background: #b7f7c1;
+    }
+
+    .points-0 {
+      background: #e5e5e5;
+      color: #666;
+    }
+
+    .total-cell {
+      background: #e0e7ff;
+      font-weight: bold;
+    }
+
+    .gold {
+      background: #ffd700 !important;
+      color: black !important;
+    }
+
+    .silver {
+      background: #c0c0c0 !important;
+      color: black !important;
+    }
+
+    .bronze {
+      background: #cd7f32 !important;
+      color: white !important;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 14px 24px;
+      background: #4fc3f7;
+      color: black;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>🎯 Bonusy</h1>
+
+    <p>Punkty bonusowe za przewidywania turniejowe.</p>
+
+    <table id="bonus-table"></table>
+
+    <div style="
+      margin-top: 35px;
+      padding: 20px;
+      background: #111827;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.7;
+    ">
+      <h3 style="margin-top:0;">📖 Punktacja bonusowa</h3>
+
+      <p>
+        Każda poprawna odpowiedź daje <strong>5 punktów</strong>.
+      </p>
+
+      <p>
+        Kategorie: Zwycięzca, Strzelec, Asystent, MVP, Young MVP, Bramkarz.
+      </p>
+    </div>
+
+    <a class="button" href="leaderboard.html">
+      Powrót do wyników
+    </a>
+
+  </div>
+
+  <script>
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTpZjNU0JBFZgJA0ebw6Xo5tHQi2GlBaYSYB-MaJ9u3ZXKjDCdYIijJ2gCoDja4cVfK5p8iq2vppsS_/pub?gid=1528791505&single=true&output=csv";
+
+    function normalizeText(text) {
+      return text
+        .toString()
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function calculateBonusPoints(prediction, actual) {
+      if (!prediction || !actual) return 0;
+
+      if (normalizeText(prediction) === normalizeText(actual)) {
+        return 5;
+      }
+
+      return 0;
+    }
+
+    fetch(csvUrl)
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.trim().split("\n").map(row => row.split(","));
+        const table = document.getElementById("bonus-table");
+
+        const headerRow = rows[0];
+        const actualRow = rows[1];
+        const playerRows = rows.slice(2);
+
+        const processedPlayers = playerRows.map(row => {
+          let total = 0;
+          const points = [];
+
+          row.forEach((cell, index) => {
+            if (index > 0) {
+              const result = calculateBonusPoints(cell, actualRow[index]);
+              total += result;
+              points[index] = result;
+            }
+          });
+
+          return {
+            row,
+            total,
+            points
+          };
+        });
+
+        processedPlayers.sort((a, b) => b.total - a.total);
+
+        const header = document.createElement("tr");
+
+        headerRow.forEach((cell, index) => {
+          const th = document.createElement("th");
+          th.textContent = cell;
+          header.appendChild(th);
+
+          if (index === 0) {
+            const totalTh = document.createElement("th");
+            totalTh.textContent = "Total";
+            header.appendChild(totalTh);
+          }
+        });
+
+        table.appendChild(header);
+
+        const actualTr = document.createElement("tr");
+        actualTr.classList.add("actual-row");
+
+        actualRow.forEach((cell, index) => {
+          const td = document.createElement("td");
+          td.textContent = cell;
+          actualTr.appendChild(td);
+
+          if (index === 0) {
+            const emptyTd = document.createElement("td");
+            emptyTd.textContent = "";
+            actualTr.appendChild(emptyTd);
+          }
+        });
+
+        table.appendChild(actualTr);
+
+        processedPlayers.forEach((player, index) => {
+          const tr = document.createElement("tr");
+
+          player.row.forEach((cell, cellIndex) => {
+            const td = document.createElement("td");
+
+            if (cellIndex === 0) {
+              td.textContent = cell;
+
+              if (index === 0) td.classList.add("gold");
+              if (index === 1) td.classList.add("silver");
+              if (index === 2) td.classList.add("bronze");
+
+              tr.appendChild(td);
+
+              const totalTd = document.createElement("td");
+              totalTd.textContent = player.total;
+              totalTd.classList.add("total-cell");
+              tr.appendChild(totalTd);
+            } else {
+              const points = player.points[cellIndex];
+
+              td.innerHTML = `
+                <div>${cell}</div>
+                <div class="points-badge points-${points}">
+                  ${points}
+                </div>
+              `;
+
+              tr.appendChild(td);
+            }
+          });
+
+          table.appendChild(tr);
+        });
+      });
+  </script>
+
+</body>
+</html>
