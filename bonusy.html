@@ -156,15 +156,21 @@
         .replace(/[\u0300-\u036f]/g, "");
     }
 
-    function calculateBonusPoints(prediction, actual) {
-      if (!prediction || !actual) return 0;
+   function calculateBonusPoints(prediction, actual, categoryIndex) {
+  if (!prediction || !actual) return 0;
 
-      if (normalizeText(prediction) === normalizeText(actual)) {
-        return 5;
-      }
+  const cleanPrediction = normalizeText(prediction);
+  const cleanActual = normalizeText(actual);
 
-      return 0;
-    }
+  if (cleanPrediction === "" || cleanActual === "") return 0;
+
+  if (cleanPrediction === cleanActual) {
+    if (categoryIndex === 1) return 10; // Zwycięzca / Winner
+    return 5;
+  }
+
+  return 0;
+}
 
     fetch(csvUrl)
       .then(response => response.text())
@@ -182,7 +188,7 @@
 
           row.forEach((cell, index) => {
             if (index > 0) {
-              const result = calculateBonusPoints(cell, actualRow[index]);
+             const result = calculateBonusPoints(cell, actualRow[index], index);
               total += result;
               points[index] = result;
             }
