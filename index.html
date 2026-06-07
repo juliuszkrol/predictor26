@@ -8,53 +8,81 @@
       font-family: Arial;
       background: #0b1020;
       color: white;
-      text-align: center;
-      padding: 20px;
       margin: 0;
-    }
-
-    h1 {
-      font-size: 48px;
-      margin-top: 30px;
-    }
-
-    p {
-      font-size: 18px;
+      padding: 20px;
+      text-align: center;
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
       background: #1a2238;
-      padding: 30px;
-      border-radius: 16px;
+      padding: 45px;
+      border-radius: 18px;
     }
 
-    iframe {
-      width: 100%;
+    h1 {
+      font-size: 56px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #9ca3af;
+      font-size: 18px;
+      margin-bottom: 35px;
+    }
+
+    .main-button {
+      display: inline-block;
+      padding: 18px 34px;
+      background: #4fc3f7;
+      color: black;
       border-radius: 12px;
-      margin-top: 30px;
-      background: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 22px;
+      margin-bottom: 35px;
     }
 
-.buttons {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 30px;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
 
-.button {
-  display: inline-block;
-  padding: 14px 24px;
-  background: #4fc3f7;
-  color: black;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 18px;
-}
+    .card {
+      background: #111827;
+      padding: 24px;
+      border-radius: 14px;
+      text-decoration: none;
+      color: white;
+      transition: 0.2s;
+      border: 1px solid #243047;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      background: #162033;
+    }
+
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #4fc3f7;
+      margin-bottom: 8px;
+    }
+
+    .card-text {
+      font-size: 14px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
   </style>
 </head>
 
@@ -64,40 +92,43 @@
 
     <h1>⚽ Predictor '26</h1>
 
-    <p>
-      Lista funkcji
+    <p class="subtitle">
+      Typuj mecze, śledź punkty i walcz o zwycięstwo.
     </p>
 
-  <div class="buttons">
+    <a class="main-button" href="submit.html">
+      Prześlij typy
+    </a>
 
-  <a class="button"
-     href="submit.html">
-     Prześlij typy
-  </a>
+    <div class="grid">
 
-    <a class="button" href="bonus-submit.html">
-  Prześlij bonusy
-</a>
+      <a class="card" href="bonus-submit.html">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">Prześlij bonusy</div>
+        <div class="card-text">Wyślij typy turniejowe: zwycięzca, król strzelców, MVP i więcej.</div>
+      </a>
 
-    <a class="button"
-   href="submit2.html">
-   Poprzednie typy
-</a>
+      <a class="card" href="submit2.html">
+        <div class="card-icon">📂</div>
+        <div class="card-title">Poprzednie typy</div>
+        <div class="card-text">Uzupełnij lub popraw typy z poprzedniej kolejki/fazy.</div>
+      </a>
 
-  <a class="button"
-   href="leaderboard.html">
-   Zobacz tabelę wyników
-</a>
+      <a class="card" href="leaderboard.html">
+        <div class="card-icon">🏆</div>
+        <div class="card-title">Tabela wyników</div>
+        <div class="card-text">Sprawdź klasyfikację ogólną, kolejki, bonusy i fazy pucharowe.</div>
+      </a>
 
-  <a class="button"
-     href="rules.html">
-     Zasady
-  </a>
+      <a class="card" href="rules.html">
+        <div class="card-icon">📜</div>
+        <div class="card-title">Zasady</div>
+        <div class="card-text">Zobacz punktację, nagrody, terminy i zasady klasyfikacji.</div>
+      </a>
 
-</div>
+    </div>
 
   </div>
 
 </body>
-</html>
 </html>
