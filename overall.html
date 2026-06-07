@@ -194,6 +194,8 @@ td {
 
       if (!pred || !act) return 0;
 
+      
+
       const predDiff = pred.home - pred.away;
       const actDiff = act.home - act.away;
 
@@ -203,6 +205,38 @@ td {
 
       return 0;
     }
+
+    function calculateBonusTotal(row, actualRow) {
+
+  let total = 0;
+
+  row.forEach((cell, index) => {
+
+    if (index > 0) {
+
+      const prediction =
+        cell.toString().trim().toLowerCase();
+
+      const actual =
+        actualRow[index].toString().trim().toLowerCase();
+
+      if (
+        prediction &&
+        actual &&
+        prediction === actual
+      ) {
+
+        if (index === 1) {
+          total += 10;
+        } else {
+          total += 5;
+        }
+      }
+    }
+  });
+
+  return total;
+}
 
     async function loadGameweek(gameweek) {
       const response = await fetch(gameweek.url);
@@ -219,11 +253,15 @@ td {
         const name = row[0];
         let total = 0;
 
-        row.forEach((cell, index) => {
-          if (index > 0) {
-            total += calculatePoints(cell, actualRow[index]);
-          }
-        });
+        if (gameweek.name === "Bonusy") {
+  total = calculateBonusTotal(row, actualRow);
+} else {
+  row.forEach((cell, index) => {
+    if (index > 0) {
+      total += calculatePoints(cell, actualRow[index]);
+    }
+  });
+}
 
         scores[name] = total;
       });
