@@ -111,6 +111,29 @@
 <input name="ENG-CRO" placeholder="ENG-CRO" required>
 <input name="GHA-PAN" placeholder="GHA-PAN" required>
 
+ <select name="confirmName" required>
+  <option value="">Potwierdź imię</option>
+  <option>Alan</option>
+  <option>Albert</option>
+  <option>Bartek</option>
+  <option>Czarek</option>
+  <option>Juliusz</option>
+  <option>Kacper</option>
+  <option>Konrad Kr.</option>
+  <option>Konrad Ku.</option>
+  <option>Maciek</option>
+  <option>Magda</option>
+  <option>Mariusz</option>
+  <option>Michał Cz.</option>
+  <option>Michał K.</option>
+  <option>Patryk</option>
+  <option>Paweł</option>
+  <option>Piotrek</option>
+  <option>Przemek</option>
+  <option>Tomasz</option>
+  <option>Witek</option>
+</select>
+
   <button type="submit">Wyślij typy</button>
 </form>
 
@@ -124,6 +147,13 @@ document.getElementById("prediction-form").addEventListener("submit", function(e
 
   const formData = new FormData(e.target);
   const data = Object.fromEntries(formData.entries());
+ if (data.name !== data.confirmName) {
+  document.getElementById("message").textContent =
+    "Wybrane imiona nie są takie same.";
+  return;
+}
+
+delete data.confirmName;
 
   fetch(scriptUrl, {
     method: "POST",
